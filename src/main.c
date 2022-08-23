@@ -707,7 +707,14 @@ void main()
         {
             draw_image();
         }
-
+        else if (strCompare(array, "video") == 0)
+        {
+            while (1)
+            {
+                draw_video();
+            }
+        }
+        
         else
         {
             // Diplay error message to users.
@@ -753,25 +760,24 @@ void main()
     // echo everything back
     while (1)
     {
-        draw_video();
-        // char str[60];
-        // // read each char
-        // str[count] = uart_getc();
-        // uart_sendc(str[count]);
-        // // Detect "Enter" key-press.
-        // if (str[count] == '\n')
-        // {
-        //     count = 0;
-        //     // Call function clearWhiteSpace to errase white-space in users input arrary.
-        //     clearWhiteSpace(str);
-        //     // print custom cursor.
-        //     uart_puts("MyBareOS> ");
-        //     // convertCharToInt();
-        // }
-        // else
-        // {
-        //     // continue reading users input if users hasn't pressed enter.
-        //     count++;
-        // }
+        char str[60];
+        // read each char
+        str[count] = uart_getc();
+        uart_sendc(str[count]);
+        // Detect "Enter" key-press.
+        if (str[count] == '\n')
+        {
+            count = 0;
+            // Call function clearWhiteSpace to errase white-space in users input arrary.
+            clearWhiteSpace(str);
+            // print custom cursor.
+            uart_puts("MyBareOS> ");
+            // convertCharToInt();
+        }
+        else
+        {
+            // continue reading users input if users hasn't pressed enter.
+            count++;
+        }
     }
 }
