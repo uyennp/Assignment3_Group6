@@ -3,11 +3,12 @@
 #include "framebf.h"
 #include "printf.h"
 #include "image.h"
+#include "video.h"
 
 void main()
 {
     int count = 0;
-    
+
     uart_init();
 
     // say welcome message
@@ -32,7 +33,7 @@ void main()
     uart_puts("Developed by Truong Phu Khang - S3814172.\n");
 
     framebf_init();
-    
+
     // Print cursor onto terminal screen
     uart_puts("\n");
     uart_puts("MyBareOS> ");
@@ -49,6 +50,39 @@ void main()
         }
     }
 
+    void draw_video()
+    {
+        int countFrame = 0;
+        framebf_init(phWidth, phHeight, virWidth, virHeight);
+        while (countFrame < 5)
+        {
+            for (int j = 0; j < 240; j++)
+            {
+                for (int i = 0; i < 320; i++)
+                {
+                    if (countFrame == 0)
+                    {
+                        drawPixelARGB32(i, j, video[j * 320 + i]);
+                    }else if (countFrame == 1)
+                    {
+                        drawPixelARGB32(i, j, video1[j * 320 + i]);
+                    }else if (countFrame == 2)
+                    {
+                        drawPixelARGB32(i, j, video2[j * 320 + i]);
+                    }else if (countFrame == 3)
+                    {
+                        drawPixelARGB32(i, j, video3[j * 320 + i]);
+                    }else if (countFrame == 4)
+                    {
+                        drawPixelARGB32(i, j, video4[j * 320 + i]);
+                    }else{
+                        uart_puts("No more frame");
+                    }
+                }
+            }
+            countFrame++;
+        }
+    }
     // Comparing string function
     int strCompare(char *arrayA, char *arrayB)
     {
@@ -672,6 +706,13 @@ void main()
         else if (strCompare(array, "image") == 0)
         {
             draw_image();
+        }
+        else if (strCompare(array, "video") == 0)
+        {
+            while (1)
+            {
+                draw_video();
+            }
         }
         
         else
