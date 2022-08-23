@@ -3,6 +3,7 @@
 #include "framebf.h"
 #include "printf.h"
 #include "image.h"
+#include "video.h"
 
 void main()
 {
@@ -49,6 +50,54 @@ void main()
         }
     }
 
+    void draw_video()
+    {
+        framebf_init(phWidth, phHeight, virWidth, virHeight);
+        for (int j = 0; j < 240; j++)
+        {
+            for (int i = 0; i < 320; i++)
+            {
+                drawPixelARGB32(i, j, video[j * 320 + i]);
+            }
+            
+        }  
+
+        for (int j = 0; j < 240; j++)
+        {
+            for (int i = 0; i < 320; i++)
+            {
+                drawPixelARGB32(i, j, video1[j * 320 + i]);
+            }
+            
+        }
+
+        for (int j = 0; j < 240; j++)
+        {
+            for (int i = 0; i < 320; i++)
+            {
+                drawPixelARGB32(i, j, video2[j * 320 + i]);
+            }
+            
+        }  
+
+        for (int j = 0; j < 240; j++)
+        {
+            for (int i = 0; i < 320; i++)
+            {
+                drawPixelARGB32(i, j, video3[j * 320 + i]);
+            }
+            
+        }  
+
+        for (int j = 0; j < 240; j++)
+        {
+            for (int i = 0; i < 320; i++)
+            {
+                drawPixelARGB32(i, j, video4[j * 320 + i]);
+            }
+            
+        }    
+    }
     // Comparing string function
     int strCompare(char *arrayA, char *arrayB)
     {
@@ -719,24 +768,25 @@ void main()
     // echo everything back
     while (1)
     {
-        char str[60];
-        // read each char
-        str[count] = uart_getc();
-        uart_sendc(str[count]);
-        // Detect "Enter" key-press.
-        if (str[count] == '\n')
-        {
-            count = 0;
-            // Call function clearWhiteSpace to errase white-space in users input arrary.
-            clearWhiteSpace(str);
-            // print custom cursor.
-            uart_puts("MyBareOS> ");
-            // convertCharToInt();
-        }
-        else
-        {
-            // continue reading users input if users hasn't pressed enter.
-            count++;
-        }
+        draw_video();
+        // char str[60];
+        // // read each char
+        // str[count] = uart_getc();
+        // uart_sendc(str[count]);
+        // // Detect "Enter" key-press.
+        // if (str[count] == '\n')
+        // {
+        //     count = 0;
+        //     // Call function clearWhiteSpace to errase white-space in users input arrary.
+        //     clearWhiteSpace(str);
+        //     // print custom cursor.
+        //     uart_puts("MyBareOS> ");
+        //     // convertCharToInt();
+        // }
+        // else
+        // {
+        //     // continue reading users input if users hasn't pressed enter.
+        //     count++;
+        // }
     }
 }
