@@ -8,7 +8,7 @@
 void main()
 {
     int count = 0;
-    
+
     uart_init();
 
     // say welcome message
@@ -33,7 +33,7 @@ void main()
     uart_puts("Developed by Truong Phu Khang - S3814172.\n");
 
     framebf_init();
-    
+
     // Print cursor onto terminal screen
     uart_puts("\n");
     uart_puts("MyBareOS> ");
@@ -52,51 +52,36 @@ void main()
 
     void draw_video()
     {
+        int countFrame = 0;
         framebf_init(phWidth, phHeight, virWidth, virHeight);
-        for (int j = 0; j < 240; j++)
+        while (countFrame < 5)
         {
-            for (int i = 0; i < 320; i++)
+            for (int j = 0; j < 240; j++)
             {
-                drawPixelARGB32(i, j, video[j * 320 + i]);
+                for (int i = 0; i < 320; i++)
+                {
+                    if (countFrame == 0)
+                    {
+                        drawPixelARGB32(i, j, video[j * 320 + i]);
+                    }else if (countFrame == 1)
+                    {
+                        drawPixelARGB32(i, j, video1[j * 320 + i]);
+                    }else if (countFrame == 2)
+                    {
+                        drawPixelARGB32(i, j, video2[j * 320 + i]);
+                    }else if (countFrame == 3)
+                    {
+                        drawPixelARGB32(i, j, video3[j * 320 + i]);
+                    }else if (countFrame == 4)
+                    {
+                        drawPixelARGB32(i, j, video4[j * 320 + i]);
+                    }else{
+                        uart_puts("No more frame");
+                    }
+                }
             }
-            
-        }  
-
-        for (int j = 0; j < 240; j++)
-        {
-            for (int i = 0; i < 320; i++)
-            {
-                drawPixelARGB32(i, j, video1[j * 320 + i]);
-            }
-            
+            countFrame++;
         }
-
-        for (int j = 0; j < 240; j++)
-        {
-            for (int i = 0; i < 320; i++)
-            {
-                drawPixelARGB32(i, j, video2[j * 320 + i]);
-            }
-            
-        }  
-
-        for (int j = 0; j < 240; j++)
-        {
-            for (int i = 0; i < 320; i++)
-            {
-                drawPixelARGB32(i, j, video3[j * 320 + i]);
-            }
-            
-        }  
-
-        for (int j = 0; j < 240; j++)
-        {
-            for (int i = 0; i < 320; i++)
-            {
-                drawPixelARGB32(i, j, video4[j * 320 + i]);
-            }
-            
-        }    
     }
     // Comparing string function
     int strCompare(char *arrayA, char *arrayB)
@@ -722,7 +707,7 @@ void main()
         {
             draw_image();
         }
-        
+
         else
         {
             // Diplay error message to users.
