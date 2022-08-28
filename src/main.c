@@ -110,7 +110,7 @@ void main()
 
             if (str[count] == 's')
             {
-                if (countY < 1206)
+                if (flag <= 500)
                 {
                     countY = flag + 100;
                     flag = countY;
@@ -128,7 +128,7 @@ void main()
 
             if (str[count] == 'w')
             {
-                if (countY > 0)
+                if (flag > 0)
                 {
                     countY = flag - 100;
                     flag = countY;
