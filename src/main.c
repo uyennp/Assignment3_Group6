@@ -94,7 +94,7 @@ void main()
     void drawLargeImage()
     {
         char str[10];
-        int count = 0, countY = 0;
+        int count = 0, countY = 0, flag = 0;
         framebf_init(pWidth, pHeight, vWidth, vHeight);
         for (int j = 0; j < 1206; j++)
         {
@@ -107,14 +107,17 @@ void main()
         while (1)
         {
             str[count] = uart_getc();
-            if (str[count] == 'w')
+
+            if (str[count] == 's')
             {
-                if (countY >= 0)
+                if (countY < 1206)
                 {
+                    countY = flag + 100;
+                    flag = countY;
                     framebf_init(pWidth, pHeight, vWidth, vHeight);
                     for (int j = 0; j < 1206; j++)
                     {
-                        countY--;
+                        countY++;
                         for (int i = 0; i < 1000; i++)
                         {
                             drawPixelARGB32(i, j, largImage[countY * 1000 + i]);
@@ -123,10 +126,12 @@ void main()
                 }
             }
 
-            if (str[count] == 's')
+            if (str[count] == 'w')
             {
-                if (countY < 1206)
+                if (countY > 0)
                 {
+                    countY = flag - 100;
+                    flag = countY;
                     framebf_init(pWidth, pHeight, vWidth, vHeight);
                     for (int j = 0; j < 1206; j++)
                     {
