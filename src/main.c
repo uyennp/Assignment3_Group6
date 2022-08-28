@@ -4,6 +4,7 @@
 #include "printf.h"
 #include "image.h"
 #include "video.h"
+#include "largeImage.h"
 
 void main()
 {
@@ -63,19 +64,25 @@ void main()
                     if (countFrame == 0)
                     {
                         drawPixelARGB32(i, j, video[j * 320 + i]);
-                    }else if (countFrame == 1)
+                    }
+                    else if (countFrame == 1)
                     {
                         drawPixelARGB32(i, j, video1[j * 320 + i]);
-                    }else if (countFrame == 2)
+                    }
+                    else if (countFrame == 2)
                     {
                         drawPixelARGB32(i, j, video2[j * 320 + i]);
-                    }else if (countFrame == 3)
+                    }
+                    else if (countFrame == 3)
                     {
                         drawPixelARGB32(i, j, video3[j * 320 + i]);
-                    }else if (countFrame == 4)
+                    }
+                    else if (countFrame == 4)
                     {
                         drawPixelARGB32(i, j, video4[j * 320 + i]);
-                    }else{
+                    }
+                    else
+                    {
                         uart_puts("No more frame");
                     }
                 }
@@ -83,6 +90,63 @@ void main()
             countFrame++;
         }
     }
+
+    void drawLargeImage()
+    {
+        char str[10];
+        int count = 0, countY = 0, flag = 0;
+        framebf_init(pWidth, pHeight, vWidth, vHeight);
+        for (int j = 0; j < 1206; j++)
+        {
+            for (int i = 0; i < 1000; i++)
+            {
+                drawPixelARGB32(i, j, largImage[j * 1000 + i]);
+            }
+        }
+
+        while (1)
+        {
+            str[count] = uart_getc();
+
+            if (str[count] == 's')
+            {
+                if (flag <= 500)
+                {
+                    countY = flag + 100;
+                    flag = countY;
+                    framebf_init(pWidth, pHeight, vWidth, vHeight);
+                    for (int j = 0; j < 1206; j++)
+                    {
+                        countY++;
+                        for (int i = 0; i < 1000; i++)
+                        {
+                            drawPixelARGB32(i, j, largImage[countY * 1000 + i]);
+                        }
+                    }
+                }
+            }
+
+            if (str[count] == 'w')
+            {
+                if (flag > 0)
+                {
+                    countY = flag - 100;
+                    flag = countY;
+                    framebf_init(pWidth, pHeight, vWidth, vHeight);
+                    for (int j = 0; j < 1206; j++)
+                    {
+                        countY++;
+                        for (int i = 0; i < 1000; i++)
+                        {
+                            drawPixelARGB32(i, j, largImage[countY * 1000 + i]);
+                        }
+                    }
+                }
+            }
+            count++;
+        }
+    }
+
     // Comparing string function
     int strCompare(char *arrayA, char *arrayB)
     {
@@ -703,7 +767,7 @@ void main()
             checkScrSize = 1;
             // setScreenSize(array);
         }
-        else if (strCompare(array, "image") == 0)
+        else if (strCompare(array, "img") == 0)
         {
             draw_image();
         }
@@ -714,7 +778,11 @@ void main()
                 draw_video();
             }
         }
-        
+        else if (strCompare(array, "Image") == 0)
+        {
+            drawLargeImage();
+        }
+
         else
         {
             // Diplay error message to users.
